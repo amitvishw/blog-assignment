@@ -28,10 +28,16 @@ export interface IBlogState {
   blog: IBlog | null;
   blogs: Array<IBlog>;
   totalCount: number;
+  createBlogLoading: boolean;
+  createBlogSuccess: boolean;
+  createBlogError: boolean;
+  createBlogErrorMessage: string;
+
   fetchBlogByIdLoading: boolean;
   fetchBlogByIdSuccess: boolean;
   fetchBlogByIdError: boolean;
   fetchBlogByIdErrorMessage: string;
+  
   fetchBlogsLoading: boolean;
   fetchBlogsSuccess: boolean;
   fetchBlogsError: boolean;

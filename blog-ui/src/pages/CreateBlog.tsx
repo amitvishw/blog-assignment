@@ -1,28 +1,41 @@
-import { Layout, Form, Button, Input, Row, Col } from "antd";
-import { useEffect } from "react";
+import { Layout, Form, Button, Input, Row, Col, notification } from "antd";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import IReactState from "../types/ReactState";
 import { blogSlice } from "../sagas/blogSaga";
+import { useNavigate } from "react-router-dom";
 
 const CreateBlog = () => {
+  const [doNavigate, setNavigate] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const blogState = useSelector((state: IReactState) => state.blogState);
-  const { blog } = blogState;
+  const { blog, createBlogSuccess, createBlogLoading, createBlogError } =
+    blogState;
 
   useEffect(() => {
-    if (blog) {
-      console.log(blog)
+    if (createBlogSuccess && doNavigate && blog) {
+      navigate(`/blogs/${blog.uuid}`);
     }
-  }, [blog]);
+    if (createBlogError) {
+      notification.error({
+        key:"error",
+        message: "Error",
+        description: "Failed to crete blog, please try again.",
+        duration: 1,
+      });
+    }
+  }, [createBlogSuccess, createBlogError, doNavigate]);
 
   const onFinish = (values: any) => {
     dispatch(blogSlice.actions.createBlogAction(values));
+    setNavigate(true);
   };
 
   return (
     <Layout.Content>
-      <Row justify="center">
+      <Row style={{ padding: "4rem" }} justify="center">
         <Col span={20}>
           <Form
             layout="vertical"
@@ -50,7 +63,12 @@ const CreateBlog = () => {
             <Row justify="end">
               <Col>
                 <Form.Item>
-                  <Button type="primary" htmlType="submit">
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    disabled={createBlogLoading}
+                    loading={createBlogLoading}
+                  >
                     Publish
                   </Button>
                 </Form.Item>

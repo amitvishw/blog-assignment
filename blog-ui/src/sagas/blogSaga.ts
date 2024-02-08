@@ -7,12 +7,16 @@ import {
   IFetchBlogsRequest,
 } from "../types/blog";
 import BlogsAPI from "../api/BlogsAPI";
-import { AxiosError, } from "axios";
+import { AxiosError } from "axios";
 
 const initialState: IBlogState = {
   blog: null,
   blogs: [],
   totalCount: 0,
+  createBlogLoading: false,
+  createBlogSuccess: false,
+  createBlogError: false,
+  createBlogErrorMessage: "",
   fetchBlogByIdLoading: false,
   fetchBlogByIdSuccess: false,
   fetchBlogByIdError: false,
@@ -27,11 +31,23 @@ export const blogSlice = createSlice({
   initialState,
   name: "blogSlice",
   reducers: {
-    createBlogAction: (state, { payload }) => {},
+    createBlogAction: (state, { payload }) => {
+      state.createBlogLoading = true;
+      state.createBlogSuccess = false;
+      state.createBlogError = false;
+    },
     createBlogSuccessAction: (state, { payload }) => {
+      state.createBlogLoading = false;
+      state.createBlogSuccess = true;
+      state.createBlogError = false;
       state.blog = payload;
     },
-    createBlogErrorAction: (state, { payload }) => {},
+    createBlogErrorAction: (state, { payload }) => {
+      state.createBlogLoading = false;
+      state.createBlogSuccess = false;
+      state.createBlogError = true;
+      state.fetchBlogByIdErrorMessage = payload;
+    },
     fetchBlogByIdAction: (state, { payload }) => {
       state.blog = null;
       state.fetchBlogByIdLoading = true;
@@ -46,7 +62,7 @@ export const blogSlice = createSlice({
     fetchBlogByIdError: (state, { payload }) => {
       state.fetchBlogByIdLoading = false;
       state.fetchBlogByIdError = true;
-      state.fetchBlogByIdErrorMessage = payload;
+      state.createBlogErrorMessage = payload;
     },
     fetchBlogsAction: (state, { payload }) => {
       state.blog = null;

@@ -14,7 +14,7 @@ const BlogCard = ({ blog, loading }: IProps) => {
         <Card hoverable loading={loading}>
           <Card.Meta
             title={blog.title}
-            description={blog.content.slice(0, 50)}
+            description={blog.content.slice(0, 200)}
           />
         </Card>
       </Link>
