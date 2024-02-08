@@ -11,3 +11,7 @@ export interface ICreateBlogRequest
   extends Omit<IBlog, "id" | "uuid" | "createdAt" | "updatedAt"> {}
 
 export interface ICreateBlogResponse extends IBlog {}
+
+export interface IBlogState {
+  blog: IBlog | null;
+}
