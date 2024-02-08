@@ -1,0 +1,24 @@
+services:
+  postgres:
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata:/data
+    environment:
+      - POSTGRES_PASSWORD=pgpassword
+      - POSTGRES_USER=pguser
+      - POSTGRES_DB=blog-db
+
+  redis:
+    image: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+    command: "--requirepass redispassword"
+volumes:
+  pgdata:
+  redisdata:
