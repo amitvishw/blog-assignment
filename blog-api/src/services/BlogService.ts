@@ -25,6 +25,17 @@ class BlogService {
     }
     return blog;
   }
+
+  public async findBlogs(
+    pageNumber = 1,
+    pageSize = 20,
+  ): Promise<{
+    blogs: Array<IBlog>;
+    totalCount: number;
+  }> {
+    const offset = (pageNumber - 1) * pageSize;
+    return this.blogModel.findBlogs(pageSize, offset);
+  }
 }
 
 export default BlogService;

@@ -30,6 +30,20 @@ class BlogModel extends Model<
     });
     return blog;
   }
+  public async findBlogs(
+    pageSize: number,
+    offset: number,
+  ): Promise<{
+    blogs: Array<IBlog>;
+    totalCount: number;
+  }> {
+    const { rows, count } = await BlogModel.findAndCountAll({
+      limit: pageSize,
+      offset,
+      raw: true,
+    });
+    return { blogs: rows, totalCount: count };
+  }
 }
 
 BlogModel.init(

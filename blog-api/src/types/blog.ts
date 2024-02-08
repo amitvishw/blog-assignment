@@ -11,3 +11,8 @@ export interface IBlogCreateRequest
 
 export interface IBlogCreateData
   extends Omit<IBlog, "id" | "createdAt" | "updatedAt"> {}
+
+export interface IBlogFetchRequest {
+  pageNumber: string;
+  pageSize: string;
+}
