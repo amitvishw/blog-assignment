@@ -23,6 +23,13 @@ class BlogModel extends Model<
     const blog = await BlogModel.create(data);
     return blog.dataValues;
   }
+  public async findBlogById(blogId: string): Promise<IBlog | null> {
+    const blog = await BlogModel.findOne({
+      where: { uuid: blogId },
+      raw: true,
+    });
+    return blog;
+  }
 }
 
 BlogModel.init(

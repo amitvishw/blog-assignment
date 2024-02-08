@@ -15,4 +15,14 @@ blogRouter.post("/", async (req, res, next) => {
   }
 });
 
+blogRouter.get("/:blogId", async (req, res, next) => {
+  try {
+    const { blogId } = req.params;
+    const result = await blogController.getBlogById(blogId);
+    return res.status(result.status).send(result);
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default blogRouter;
