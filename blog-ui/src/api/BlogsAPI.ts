@@ -2,6 +2,8 @@ import {
   ICreateBlogRequest,
   ICreateBlogResponse,
   IFetchBlogResponse,
+  IFetchBlogsRequest,
+  IFetchBlogsResponse,
 } from "../types/blog";
 import APIClient from "./APIClient";
 
@@ -30,9 +32,22 @@ export const fetchBlogById = async (
     .then(({ data }) => data.data);
 };
 
+export const fetchBlogs = async (
+  params: IFetchBlogsRequest,
+): Promise<IFetchBlogsResponse> => {
+  return client
+    .callApi({
+      url: `/blogs`,
+      method: "GET",
+      params: params,
+    })
+    .then(({ data }) => data.data);
+};
+
 const BlogAPI = {
   createBlog,
   fetchBlogById,
+  fetchBlogs,
 };
 
 export default BlogAPI;

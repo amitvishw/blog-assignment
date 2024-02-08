@@ -1,15 +1,26 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { all, call, put, StrictEffect, takeLatest } from "redux-saga/effects";
-import { IBlogState, IBlog, ICreateBlogRequest } from "../types/blog";
+import {
+  IBlogState,
+  IBlog,
+  ICreateBlogRequest,
+  IFetchBlogsRequest,
+} from "../types/blog";
 import BlogsAPI from "../api/BlogsAPI";
-import { AxiosError, AxiosResponse } from "axios";
+import { AxiosError, } from "axios";
 
 const initialState: IBlogState = {
   blog: null,
+  blogs: [],
+  totalCount: 0,
   fetchBlogByIdLoading: false,
   fetchBlogByIdSuccess: false,
   fetchBlogByIdError: false,
   fetchBlogByIdErrorMessage: "",
+  fetchBlogsLoading: false,
+  fetchBlogsSuccess: false,
+  fetchBlogsError: false,
+  fetchBlogsErrorMessage: "",
 };
 
 export const blogSlice = createSlice({
@@ -36,6 +47,23 @@ export const blogSlice = createSlice({
       state.fetchBlogByIdLoading = false;
       state.fetchBlogByIdError = true;
       state.fetchBlogByIdErrorMessage = payload;
+    },
+    fetchBlogsAction: (state, { payload }) => {
+      state.blog = null;
+      state.fetchBlogsLoading = true;
+      state.fetchBlogsSuccess = false;
+      state.fetchBlogsError = false;
+    },
+    fetchBlogsSuccess: (state, { payload }) => {
+      state.fetchBlogsLoading = false;
+      state.fetchBlogsSuccess = true;
+      state.blogs = payload.blogs;
+      state.totalCount = payload.totalCount;
+    },
+    fetchBlogsError: (state, { payload }) => {
+      state.fetchBlogsLoading = false;
+      state.fetchBlogsError = true;
+      state.fetchBlogsErrorMessage = payload;
     },
   },
 });
@@ -71,9 +99,25 @@ function* fetchBlogByIdSaga(action: {
     }
   }
 }
+
+function* fetchBlogsSaga(action: { payload: IFetchBlogsRequest }): Generator {
+  try {
+    console.log("0----", action.payload);
+    const blog = yield call(BlogsAPI.fetchBlogs, action.payload);
+    yield put(blogSlice.actions.fetchBlogsSuccess(blog));
+  } catch (error) {
+    yield put(
+      blogSlice.actions.fetchBlogsError(
+        "Failed to fetch blogs, please try again",
+      ),
+    );
+  }
+}
+
 export default function* blogSaga() {
   yield all([takeLatest(blogSlice.actions.createBlogAction, createBlogSaga)]);
   yield all([
     takeLatest(blogSlice.actions.fetchBlogByIdAction, fetchBlogByIdSaga),
   ]);
+  yield all([takeLatest(blogSlice.actions.fetchBlogsAction, fetchBlogsSaga)]);
 }

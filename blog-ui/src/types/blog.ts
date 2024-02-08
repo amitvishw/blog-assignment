@@ -14,10 +14,26 @@ export interface ICreateBlogResponse extends IBlog {}
 
 export interface IFetchBlogResponse extends IBlog {}
 
+export interface IFetchBlogsRequest {
+  pageNumber: number;
+  pageSize: number;
+}
+
+export interface IFetchBlogsResponse {
+  blogs: Array<IBlog>;
+  totalCount: number;
+}
+
 export interface IBlogState {
   blog: IBlog | null;
+  blogs: Array<IBlog>;
+  totalCount: number;
   fetchBlogByIdLoading: boolean;
   fetchBlogByIdSuccess: boolean;
   fetchBlogByIdError: boolean;
   fetchBlogByIdErrorMessage: string;
+  fetchBlogsLoading: boolean;
+  fetchBlogsSuccess: boolean;
+  fetchBlogsError: boolean;
+  fetchBlogsErrorMessage: string;
 }
