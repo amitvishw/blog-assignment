@@ -2,7 +2,7 @@ import { createClient } from "redis";
 
 class RedisCache {
   public static client = createClient({
-    password: process.env.REDIS_PASSWORD || "redispassword",
+    url: process.env.REDIS_URL,
   });
   public static async init() {
     try {
