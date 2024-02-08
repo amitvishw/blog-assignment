@@ -1,8 +1,23 @@
 import { Layout, Form, Button, Input, Row, Col } from "antd";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import IReactState from "../types/ReactState";
+import { blogSlice } from "../sagas/blogSaga";
 
 const CreateBlog = () => {
+  const dispatch = useDispatch();
+
+  const blogState = useSelector((state: IReactState) => state.blogState);
+  const { blog } = blogState;
+
+  useEffect(() => {
+    if (blog) {
+      console.log(blog)
+    }
+  }, [blog]);
+
   const onFinish = (values: any) => {
-    console.log(values)
+    dispatch(blogSlice.actions.createBlogAction(values));
   };
 
   return (
