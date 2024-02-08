@@ -1,8 +1,29 @@
-import { Model, DataTypes } from "sequelize";
-import { IBlog } from "../types/blog";
+import {
+  Model,
+  DataTypes,
+  CreationOptional,
+  InferAttributes,
+  InferCreationAttributes,
+} from "sequelize";
+import { IBlog, IBlogCreateData } from "../types/blog";
 import Database from "../database/Database";
 
-class BlogModel extends Model<IBlog> {}
+class BlogModel extends Model<
+  InferAttributes<BlogModel>,
+  InferCreationAttributes<BlogModel>
+> {
+  declare id: CreationOptional<number>;
+  declare uuid: string;
+  declare title: string;
+  declare content: string;
+  declare createdAt?: Date;
+  declare updatedAt?: Date;
+
+  public async createBlog(data: IBlogCreateData): Promise<IBlog> {
+    const blog = await BlogModel.create(data);
+    return blog.dataValues;
+  }
+}
 
 BlogModel.init(
   {

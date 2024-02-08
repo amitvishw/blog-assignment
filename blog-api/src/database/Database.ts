@@ -13,7 +13,7 @@ export class Database {
   public static async init(): Promise<boolean> {
     try {
       await Database.sequelize.authenticate();
-      await Database.sequelize.sync();
+      await Database.sequelize.sync({ alter: true });
       console.log("Connection has been established successfully.");
       return true;
     } catch (error) {
