@@ -4,6 +4,10 @@ import { IBlog, IBlogCreateRequest } from "../types/blog";
 import ResourceNotFound from "../errors/ResourceNotFound";
 import RedisCache from "../database/Redis";
 
+/**
+ * BlogService: controller class to serve as a data layer for blogs
+ * @constructor
+ */
 class BlogService {
   private blogModel: BlogModel;
 
@@ -11,6 +15,11 @@ class BlogService {
     this.blogModel = new BlogModel();
   }
 
+  /**
+   * method to create blog and cache in redis
+   * @param data IBlogCreateRequest
+   * @returns blog object of type IBlog
+   */
   public async createBlog(data: IBlogCreateRequest): Promise<IBlog> {
     const blog = await this.blogModel.createBlog({
       uuid: uuidv4(),
@@ -23,6 +32,11 @@ class BlogService {
     return blog;
   }
 
+  /**
+   * method get blog by id db using cache
+   * @param blogId string
+   * @returns blog object of type IBlog
+   */
   public async findBlogById(blogId: string): Promise<IBlog> {
     const cacheKey = this.getCacheKey(blogId);
     const cachedBlog = await RedisCache.client.get(cacheKey);
@@ -38,6 +52,12 @@ class BlogService {
     return blog;
   }
 
+  /**
+   * method get paginated blogs
+   * @param pageNumber
+   * @param pageSize
+   * @returns an object { blogs: array of blog object of type IBlog, totalCount: total number of blogs}
+   */
   public async findBlogs(
     pageNumber = 1,
     pageSize = 20,

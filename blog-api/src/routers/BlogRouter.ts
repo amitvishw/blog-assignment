@@ -6,6 +6,11 @@ const blogRouter = express.Router();
 
 const blogController = new BlogController();
 
+/**
+ * router to handle create blog api /api/blogs
+ * @path /api/blogs
+ * @method post
+ */
 blogRouter.post("/", async (req, res, next) => {
   try {
     const result = await blogController.createBlog(req.body);
@@ -16,6 +21,11 @@ blogRouter.post("/", async (req, res, next) => {
   }
 });
 
+/**
+ * router to handle get blogs api /api/blogs
+ * @path /api/blogs
+ * @method get
+ */
 blogRouter.get("/", async (req, res, next) => {
   try {
     const result = await blogController.getBlogs(req.query as any);
@@ -25,6 +35,11 @@ blogRouter.get("/", async (req, res, next) => {
   }
 });
 
+/**
+ * router to handle get blog by id api /api/blogs/:blogId
+ * @path /api/blogs/:blogId
+ * @method get
+ */
 blogRouter.get("/:blogId", async (req, res, next) => {
   try {
     const { blogId } = req.params;

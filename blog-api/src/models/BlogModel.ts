@@ -8,6 +8,9 @@ import {
 import { IBlog, IBlogCreateData } from "../types/blog";
 import Database from "../database/Database";
 
+/**
+ * BlogModel: model class for blog table
+ */
 class BlogModel extends Model<
   InferAttributes<BlogModel>,
   InferCreationAttributes<BlogModel>
