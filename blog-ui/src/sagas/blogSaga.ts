@@ -31,6 +31,7 @@ export const blogSlice = createSlice({
   initialState,
   name: "blogSlice",
   reducers: {
+    //@ts-ignore
     createBlogAction: (state, { payload }) => {
       state.createBlogLoading = true;
       state.createBlogSuccess = false;
@@ -48,6 +49,7 @@ export const blogSlice = createSlice({
       state.createBlogError = true;
       state.fetchBlogByIdErrorMessage = payload;
     },
+    //@ts-ignore
     fetchBlogByIdAction: (state, { payload }) => {
       state.blog = null;
       state.fetchBlogByIdLoading = true;
@@ -64,6 +66,7 @@ export const blogSlice = createSlice({
       state.fetchBlogByIdError = true;
       state.createBlogErrorMessage = payload;
     },
+    //@ts-ignore
     fetchBlogsAction: (state, { payload }) => {
       state.blog = null;
       state.fetchBlogsLoading = true;
