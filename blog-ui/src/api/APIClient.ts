@@ -9,7 +9,7 @@ export default class APIClient {
   readonly axios: AxiosInstance;
 
   constructor(baseURL?: string) {
-    this.baseURL = baseURL || (process.env.APP_API_URL as string);
+    this.baseURL = baseURL || import.meta.env.VITE_APP_API_URL;
 
     this.axios = Axios.create({
       baseURL: `${this.baseURL}/api`,
