@@ -12,6 +12,12 @@ export interface ICreateBlogRequest
 
 export interface ICreateBlogResponse extends IBlog {}
 
+export interface IFetchBlogResponse extends IBlog {}
+
 export interface IBlogState {
   blog: IBlog | null;
+  fetchBlogByIdLoading: boolean;
+  fetchBlogByIdSuccess: boolean;
+  fetchBlogByIdError: boolean;
+  fetchBlogByIdErrorMessage: string;
 }

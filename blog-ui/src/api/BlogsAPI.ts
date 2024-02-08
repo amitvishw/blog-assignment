@@ -1,4 +1,8 @@
-import { ICreateBlogRequest, ICreateBlogResponse } from "../types/blog";
+import {
+  ICreateBlogRequest,
+  ICreateBlogResponse,
+  IFetchBlogResponse,
+} from "../types/blog";
 import APIClient from "./APIClient";
 
 const client = new APIClient();
@@ -15,8 +19,20 @@ export const createBlog = async (
     .then(({ data }) => data.data);
 };
 
+export const fetchBlogById = async (
+  blogId: string,
+): Promise<IFetchBlogResponse> => {
+  return client
+    .callApi({
+      url: `/blogs/${blogId}`,
+      method: "GET",
+    })
+    .then(({ data }) => data.data);
+};
+
 const BlogAPI = {
   createBlog,
+  fetchBlogById,
 };
 
 export default BlogAPI;
